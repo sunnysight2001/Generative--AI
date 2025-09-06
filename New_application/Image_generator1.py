@@ -1,33 +1,32 @@
-#!pip install -qU openai
-!pip install openai==0.28
-!pip install gradio
-import openai
-import gradio as gr
-import requests
-from PIL import Image
-from io import BytesIO
-# SET openai api key
+import streamlit as st
+import base64
+from openai import OpenAI
 
-openai.api_key = "your api key"
-# function for image generation
+#Initialize OpenAI client
+client = OpenAI()
 
+#Streamlit App
+st.title("OpenAI Image Generator")
+st.write('Enter a prompt below to generate an image using OpenAI's mode")
 
-def generate_image(prompt):
+# input prompt
+prompt = st.text_input("Eneter your prompt for image generation:")
 
-  response = openai.Image.create(
-    prompt=prompt,
-    n=1,
-    size="512x512"
-  )
-  image_url = response['data'][0]['url']
+if st.button("Generate Image")
+  if prompt :
+    try:
+        with st.spinner("Generating Image...")
+              # Call OpenAI Image API
+              img = Client.image.generate( 
+              model ="gpt-image1",
+              n=1, size="1024X1024"
+              )
 
-  image_bytes = requests.get(image_url).content
-  return Image.open(BytesIO(image_bytes))
+              # Decode base64 image
+              image_bytes = base64.b64decode(img.data[0].b64_json)
 
-  return image_bytes
-  import gradio as gr
+              #save temp image
+              with open('generated_image.png", "wb") as f:fwrite(image-bytes)
 
-result = gr.Interface(fn=generate_image, inputs="text", outputs="image")
-result.launch(debug='True')
-
-  
+              # Display in streamlit
+              st.image("generated_image.png", caption="Generated
